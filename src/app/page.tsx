@@ -1,7 +1,24 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
-export default function Home() {
+// server side fetching
+async function getData() {
+  console.log("Fetching post data from server...");
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  console.log("Fetching post data...");
+  const data = await res.json();
+  return {
+    post: data,
+  };
+
+}
+
+export default async function Home() {
+  const { post } = await getData();
+  console.log("Post data:", post);
   return (
     <div className={styles.page}>
       <main className={styles.main}>
